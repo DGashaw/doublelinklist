@@ -7,23 +7,35 @@
 using namespace std;
 int CAPACITY = 10;
 
+template<typename T>
 class Stack
 {
     private:
-        int *stack;
+        T *stack;
         int size;
     public:
+        //constructor
         Stack()
         {
             size = 0;
-            stack = new int[CAPACITY];
+            stack = new T[CAPACITY];
         }
+
+        //checks whetther the stack is empty or not
         bool isEmpty()
         {
             return (size == 0) ? true : false;
         }
+        //Pop will remove the top element from the stack; meaning the element removed won't exist in the stack anymore
+        int pop()
+        {
+            return stack[--size];
+        }
 
-        void push(int number)
+        /* Add new element to the stack and checks that there is enough room to add the new element. If not it will increase the current capacity by 
+           doubling it. 
+        */ 
+        void push(T number)
         {
             if(size < CAPACITY)
             {
@@ -33,7 +45,7 @@ class Stack
             // Expand the current stack size first and then add push the element
             else
             {
-                int *temp = new int[CAPACITY*2];
+                T *temp = new T[CAPACITY*2];
                 for(int i=0; i<size; i++)
                 {
                     temp[i] = stack[i];
@@ -49,9 +61,9 @@ class Stack
             
         }
 
+        //Display the contents of the stack using LIFO(last in first out) fashion
         void display() const
         {
-            cout << endl;
             for(int i=size-1; i >= 0; i--)
             {
                 cout << stack[i] << " ";
@@ -60,6 +72,7 @@ class Stack
             cout << endl;
         }
 
+        //Distructor that will return the memory requested using new operator back to the OS
         ~ Stack()
         {
             cout << endl;
@@ -67,27 +80,62 @@ class Stack
 
             delete stack;
         }
+
+        //Return the current size of the stack which might change over the execution of the program
+        int stack_size()
+        {
+            return size;
+        }
+        //Returns the reserved space for stack, it might be greater or equal to the size of the stack size
+        int stack_capacity()
+        {
+            return CAPACITY;
+        }
 };
 
 int main()
 {
-    Stack s;
+    Stack<int> s;
 
     for(int i=0; i < 10; i++)
     {
         s.push(i*i);
     }
-
+    cout << "Poping the stack result " << s.pop() << endl;
+    cout << "Didsplaying the contents of Stack s..." << endl;
     s.display();
+    cout << "\n";
 
     //Testting if actually the stack array is expanding
+    cout << "The current capacity of Stack s is " << s.stack_capacity() << endl;
     for(int i = 10; i < 15; i++)
     {
         s.push(i*i);
     }
-
+    cout << "After adding more elements to Stack s, its capacity is " << s.stack_capacity() << endl;
+    cout <<"\n";
+    cout << "The current contents of the Stack s are..." << endl;
     s.display();
 
+    Stack<char> ch;
+    for (int i = 65; i < (65 + 26) ; i++)
+    {
+        ch.push(static_cast<char>(i));
+    }
+
+    cout << "Upper case letters of the English alphabets..." << endl;
+    ch.display();
+
+    Stack<char> ch2;
+    for (int i = 97; i < (97 + 26) ; i++)
+    {
+        ch2.push(static_cast<char>(i));
+    }
+
+    cout << "Displaying the lowercase letters of the english alphabets...." <<endl;
+    ch2.display();
+
+    return 0;
 
 
 }
