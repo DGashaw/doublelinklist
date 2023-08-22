@@ -2,45 +2,45 @@
 
 using namespace std;
 
-template<class Type>
+template<typename T>
 struct Link
 {
-    Type data;
+    T data;
     Link* next;
     Link* prev;
 };
 
-template<class Type>
+template<typename T>
 class DoubleLinkList
 {
     private:
-        Link<Type>* head;
-        Link<Type>* tail;
+        Link<T>* head;
+        Link<T>* tail;
         int count; // for counting the number of elements in the linked list
 
     public: 
         //Constructor
         DoubleLinkList();
         //Function to add the head of the list
-        void addToHead(Type value);
+        void addToHead(T value);
         //Function that add to the tail of the list
-        void addToTail(Type value);
+        void addToTail(T value);
         //Function that returns the last node of the link list
-        Link<Type>* findLastNode();
+        Link<T>* findLastNode();
         //Function that returns a specific node with a given value if exist in the list
-        Link<Type>* searchNode(Type value);
+        Link<T>* searchNode(T value);
         //Function that deletes a specific node with a given value if exist in the list
-        void deleteNode(Type value);
+        void deleteNode(T value);
         //Function that displays the list in forward direction (starting from the head)
         void display() const;
         //Function that displays the list in reverse direction (starting from the tail)
         void reverseDisplay() const;
         //Function that returns a reversed double link list
-        DoubleLinkList<Type>* reverese();
+        DoubleLinkList<T>* reverese();
         //Overloaded subscript operator to access the double link list with index
-        Type& operator [] (int j)
+        T& operator [] (int j)
         {
-            Link<Type>* node = new Link<Type>;
+            Link<T>* node = new Link<T>;
 
             node = head;
             if(j < size())
@@ -59,21 +59,37 @@ class DoubleLinkList
         {
             return this->count;
         }
+        ~DoubleLinkList()
+        {
+            Link<T>* temp = new Link<T>;
+
+            temp = head;
+            while(temp->next != nullptr)
+            {
+                cout << "Deleting ... " << temp->data << endl;
+                temp = temp->next;
+                delete temp->prev;
+
+            }
+            cout << "Deleting ... " << temp->data << endl;
+
+            delete temp;
+        }
 
 };
 
-template<class Type>
-DoubleLinkList<Type>::DoubleLinkList()
+template<typename T>
+DoubleLinkList<T>::DoubleLinkList()
 {
     head = NULL;
     tail = NULL;
     count = 0;
 }
 
-template<class Type>
-void DoubleLinkList<Type>::addToHead(Type value)
+template<typename T>
+void DoubleLinkList<T>::addToHead(T value)
 {
-    Link<Type>* newLink = new Link<Type>;
+    Link<T>* newLink = new Link<T>;
     newLink->data = value;
 
     //check if the link list is empty
@@ -98,11 +114,11 @@ void DoubleLinkList<Type>::addToHead(Type value)
     count += 1;
 }
 
-template<class Type>
-void DoubleLinkList<Type>::addToTail(Type value)
+template<typename T>
+void DoubleLinkList<T>::addToTail(T value)
 {
-    Link<Type>* newLink = new Link<Type>;
-    Link<Type>* temp = new Link<Type>;
+    Link<T>* newLink = new Link<T>;
+    Link<T>* temp = new Link<T>;
     newLink->data = value;
 
     if(tail == NULL)
@@ -126,10 +142,10 @@ void DoubleLinkList<Type>::addToTail(Type value)
 
 }
 
-template<class Type>
-Link<Type>* DoubleLinkList<Type>::findLastNode()
+template<typename T>
+Link<T>* DoubleLinkList<T>::findLastNode()
 {
-    Link<Type>* temp = new Link<Type>;
+    Link<T>* temp = new Link<T>;
     temp = head;
 
     while(temp != NULL)
@@ -142,10 +158,10 @@ Link<Type>* DoubleLinkList<Type>::findLastNode()
     return temp;
 }
 
-template<class Type>
-Link<Type>* DoubleLinkList<Type>::searchNode(Type value)
+template<typename T>
+Link<T>* DoubleLinkList<T>::searchNode(T value)
 {
-    Link<Type>* node = new Link<Type>;
+    Link<T>* node = new Link<T>;
     node = head;
 
     while(node != NULL)
@@ -158,10 +174,10 @@ Link<Type>* DoubleLinkList<Type>::searchNode(Type value)
     return node;
 }
 
-template<class Type>
-void DoubleLinkList<Type>::deleteNode(Type value)
+template<typename T>
+void DoubleLinkList<T>::deleteNode(T value)
 {
-    Link<Type>* temp = new Link<Type>;
+    Link<T>* temp = new Link<T>;
     temp = searchNode(value);
 
     //Delete the first node which has data = value as long if it exist
@@ -192,11 +208,11 @@ void DoubleLinkList<Type>::deleteNode(Type value)
 
             }
 }
-template<class Type>
-DoubleLinkList<Type>* DoubleLinkList<Type>::reverese()
+template<typename T>
+DoubleLinkList<T>* DoubleLinkList<T>::reverese()
 {
-    DoubleLinkList<Type>* list = new DoubleLinkList<Type>();
-    Link<Type>* temp = new Link<Type>;
+    DoubleLinkList<T>* list = new DoubleLinkList<T>();
+    Link<T>* temp = new Link<T>;
 
     temp = head;
     while(temp != NULL)
@@ -208,26 +224,10 @@ DoubleLinkList<Type>* DoubleLinkList<Type>::reverese()
     return list;
 }
 
-/*
-template<class Type>
-Type& DoubleLinkList<Type>::operator[] (int index)
+template<typename T>
+void DoubleLinkList<T>::display() const
 {
-    Link<Type>* node = new Link<Type>;
-    node = head;
-    if(index < size())
-    {
-        for(int i = 0; i < index; i++)
-            node = node->next;
-    }
-
-    return node->data;
-}
-*/
-
-template<class Type>
-void DoubleLinkList<Type>::display() const
-{
-    Link<Type>* temp = new Link<Type>;
+    Link<T>* temp = new Link<T>;
     temp = head;
 
     cout << "[";
@@ -242,10 +242,10 @@ void DoubleLinkList<Type>::display() const
 
     cout << "]";
 }
-template<class Type>
-void DoubleLinkList<Type>::reverseDisplay() const
+template<typename T>
+void DoubleLinkList<T>::reverseDisplay() const
 {
-    Link<Type>* temp = new Link<Type>;
+    Link<T>* temp = new Link<T>;
     temp = tail;
     
     cout << "[";
@@ -327,6 +327,8 @@ int main()
     cout << "Enter the index number you want to access from dl2 double link list: ";
     cin >> index;
     cout << "The node at index "<< index << " = " << (*dl2)[index] << endl;
+
+    //Some more features can be added here 
 
 
 
